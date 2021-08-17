@@ -13,14 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path
 
 from . import views
 
+from productos.views import ProductosListView #importamos la nueva clase que posee la vista de productos
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.index,name='index'),
+    # path('',views.index,name='index'),aca se reemplaza esta url y se asigna la url a la clase declarada en la vista de productos por esta que sigue a continuacion
+    path('', ProductosListView.as_view() ,name='index'),
+
+
+
     path('usuarios/login/',views.iniciodesesion,name='login'),
     path('usuarios/logout/',views.cerrarsesion,name='logout'),
     path('usuarios/registro/',views.registro,name='registro'),

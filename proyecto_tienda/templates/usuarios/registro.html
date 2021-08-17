@@ -1,23 +1,27 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% extends 'base.html' %}
+{% block content %}
+  <div class="col-12 bg-white rounded">
+    <form action="" method="post" class="p-3">
+      {% csrf_token %}
+      <!-- iteracion de campos de un formulario forma recomendada -->
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/estilos.css'  %}">
+      {% for campos in forms %}
+        <div class="form-group">
+          {{ campos.label_tag }}
+          {{campos}}
+          <!-- aca abajo se muestra el mensaje de validacion -->
+          {% if campos.errors %}
+            {{campos.errors}}
+          {% endif %}
 
-    <title>Registro</title>
-  </head>
-  <body class="container">
-      <div class="row d-flex justify-content-center align-items-center vh-100">
-          <div class="col-12 bg-white">
-             <form action="" method="post" class="p-3">
-                {% csrf_token %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-success">Registrar</button>
+    </form>
+  </div>
+{% endblock  %}
 
+    <!-- 
                 <div class="form-group">
                     <div class="form-group">
                         {{forms.usuario.label_tag}}
@@ -31,18 +35,9 @@
                         {{forms.clave.label_tag}}
                         {{forms.clave}}
                     </div>
-                </div>
+                </div> -->
 
-                <!-- {% csrf_token %}
+    <!-- {% csrf_token %}
                 {{forms}} -->
-                <button type="submit" class="btn btn-success">Registrar</button>
-             </form> 
-          </div>
-      </div>
     
-    
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  </body>
-</html>
+  
