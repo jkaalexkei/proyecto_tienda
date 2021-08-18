@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.expressions import F
 
 # Create your models here.
 
@@ -7,6 +8,7 @@ class Producto(models.Model):
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=8,decimal_places=2) # 12345678,12
     created = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(null=False,blank=False,unique=True)#se usa para obtener elementos a partir de su slug
 
 
     def __str__(self):

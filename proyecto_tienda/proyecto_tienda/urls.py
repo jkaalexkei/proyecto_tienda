@@ -20,11 +20,15 @@ from django.urls import path
 from . import views
 
 from productos.views import ProductosListView #importamos la nueva clase que posee la vista de productos
+from django.urls import include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('',views.index,name='index'),aca se reemplaza esta url y se asigna la url a la clase declarada en la vista de productos por esta que sigue a continuacion
+    #el metodo as_view le indica a django que dicha clase sera usada como una vista
     path('', ProductosListView.as_view() ,name='index'),
+    #producto/id
+    path('producto/',include('productos.urls')),#con esto le estamos indicando que podemos hacer uso de todas las rutas mediante el prefijo producto
 
 
 
