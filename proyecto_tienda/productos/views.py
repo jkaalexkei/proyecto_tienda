@@ -40,3 +40,4 @@ class ProductoDetailView(DetailView):
 
         print(context)
         return context
+
