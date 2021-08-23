@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="col">
+        {% include "producto/snippets/buscador.html" with query=query %}
+        <hr>
+        <p>Resultados para: {{ query }}</p>
+        
+        
+            {% for objeto in producto_list  %}
+              <div class="col-3 mt-5">
+                <!-- en caso de usar otro nombre de variable se puede configurar como sigue a continuacion -->
+                {% include "producto/snippets/producto.html" with prod=objeto %}
+              </div>
+
+            {% endfor %}
+          
+    </div>
+
+
+{% endblock  %}

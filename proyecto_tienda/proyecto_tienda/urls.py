@@ -21,6 +21,8 @@ from . import views
 
 from productos.views import ProductosListView #importamos la nueva clase que posee la vista de productos
 from django.urls import include
+from django.conf.urls.static import static #modulo para trabajar con archivos estaticos
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,3 +38,7 @@ urlpatterns = [
     path('usuarios/logout/',views.cerrarsesion,name='logout'),
     path('usuarios/registro/',views.registro,name='registro'),
 ]
+
+#condicionamos para extender las rutas especificamente para trabajar con las imagenes
+if settings.DEBUG:#esta condicion nos permite ver imagenes en el template
+    urlpatterns+= static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

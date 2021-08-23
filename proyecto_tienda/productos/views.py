@@ -38,6 +38,22 @@ class ProductoDetailView(DetailView):
         context = super().get_context_data(**kwargs) #esto genera un nuevo diccionario para generar nuevas llaves
         context['titulo'] = 'Listado de Productos' #aca se reemplaza lo que tiene el nombre titulo por un nuevo valor
 
-        print(context)
+        # print(context)
         return context
 
+class ProductoBuscadorListView(ListView):
+    template_name = 'producto/buscador.html'
+
+
+    def get_queryset(self):
+        return Producto.objects.filter(titulo=self.query())
+    
+    def query(self):
+        return self.request.GET.get('q')
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs) #esto genera un nuevo diccionario para generar nuevas llaves
+        context['query'] = self.query()
+
+        # print(context)
+        return context

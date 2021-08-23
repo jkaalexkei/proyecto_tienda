@@ -9,8 +9,9 @@ from django.db.models.signals import pre_save
 class Producto(models.Model):
     titulo = models.CharField(max_length=50)
     descripcion = models.TextField()
-    precio = models.DecimalField(max_digits=8,decimal_places=2) # 12345678,12
+    precio = models.DecimalField(max_digits=8,decimal_places=2,default=0.0) # 12345678,12
     created = models.DateTimeField(auto_now_add=True)
+    imagen=models.ImageField(upload_to='productos/',null=False,blank=False)
     slug = models.SlugField(null=False,blank=False,unique=True)#se usa para obtener elementos a partir de su slug
     #unique--> permite almacenar valores unicos
 

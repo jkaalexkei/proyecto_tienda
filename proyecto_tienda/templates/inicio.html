@@ -8,30 +8,32 @@
 {% block content %}
 
 
-      <div class="col-12">
-        <h1 class="mt-5">{{titulo}}</h1>
-      </div>
-      <div class="col-6 border bg-dark text-white p-3 text-center">Producto</div>
-      <div class="col-6 border bg-dark text-white p-3 text-center">Precio</div>
+      
+      <!-- <div class="col-6 border bg-dark text-white p-3 text-center">Producto</div>
+      <div class="col-6 border bg-dark text-white p-3 text-center">Precio</div> -->
       <!-- <div class="col-4 border bg-dark text-white p-3">Stock</div> -->
 
       <!-- el termino objects_list hace referencia a la lista de productos -->
-      {% for prod in producto_list  %}
+      <div class="col-12">
+        <h1 class="text-center">{{titulo}}</h1>
+        {% include 'producto/snippets/buscador.html' %}
+          <div class="row">
+            {% for objeto in producto_list  %}
+              <div class="col-3 mt-5">
+                <!-- en caso de usar otro nombre de variable se puede configurar como sigue a continuacion -->
+                {% include "producto/snippets/producto.html" with prod=objeto %}
+              </div>
 
-        <div class="col-6 border p-3 bg-white text-center">{{prod.titulo}}</div>
-        <div class="col-6 border p-3 bg-white text-center">{{prod.precio}}</div>
-
+            {% endfor %}
+          </div>
+          
+    </div>
         <!-- {% if prod.stock %}
           <div class="col-4 border p-3 text-success bg-white">Disponible</div>
         {% else %}
           <div class="col-4 border p-3 text-danger bg-white">No Disponible</div>
         {% endif %} -->
 
-
-      {% endfor %}
-
-
-  
 
 
 {% endblock %}

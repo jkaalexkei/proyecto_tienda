@@ -1,15 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="col bg-white">
+    <div class="col-12 bg-white">
         <h2 class="">detalles del producto</h2>
-        <div class="h5">{{producto.titulo}}</div>
-        <div class="h5">
-            Precio: <span class="text-danger">{{producto.precio}}</span>
+        <div class="row">
+            <div class="col-3">
+                
+                {% if producto.imagen %}
+
+                    <img src="{{ producto.imagen.url }}" alt="Image del producto" width="200" height="200">
+                    
+                {% endif %}
+                    
+            </div>
+            <div class="col-9">
+
+                <div class="h5">{{producto.titulo}}</div>
+                <div class="h5">
+                    Precio: <span class="text-danger">{{producto.precio}}</span>
+                </div>
+                <div>
+                    <p>{{producto.descripcion}}</p>
+                </div>
+
+            </div>
         </div>
-        <div>
-            <p>{{producto.descripcion}}</p>
-        </div>
+
+
+        
     </div>
 {% endblock  %}
     
