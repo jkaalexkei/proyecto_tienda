@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView #modulo para trabajar en detalle con un objeto
 from productos.models import Producto
+from django.db.models import Q
 
 # Create your views here.
 
@@ -22,7 +23,7 @@ class ProductosListView(ListView):
         context = super().get_context_data(**kwargs) #esto genera un nuevo diccionario para generar nuevas llaves
         context['titulo'] = 'Listado de Productos' #aca se reemplaza lo que tiene el nombre titulo por un nuevo valor
 
-        print(context)
+        # print(context)
         return context
 
 
@@ -46,14 +47,22 @@ class ProductoBuscadorListView(ListView):
 
 
     def get_queryset(self):
-        return Producto.objects.filter(titulo=self.query())
+        filtros = Q(titulo__icontains=self.query()) | Q(categoria__titulo__icontains=self.query())
+        # return Producto.objects.filter(titulo=self.query())
+        # return Producto.objects.filter(titulo__icontains=self.query())
+        return Producto.objects.filter(filtros)
+        #(titulo__icontains=self.query())
+        # return Producto.objects.filter(titulo__icontains=self.query())
+
+#
     
     def query(self):
         return self.request.GET.get('q')
 
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs) #esto genera un nuevo diccionario para generar nuevas llaves
-        context['query'] = self.query()
+        context['query'] = self.query() 
+        context['count'] = context['producto_list'].count()
 
         # print(context)
         return context
