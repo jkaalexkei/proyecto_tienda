@@ -1,0 +1,10 @@
+para  el respaldo y recuperacion se emplean los siguientes comandos
+
+
+respaldo de datos:
+
+python manage.py dumpdata productos.producto --format=json --indent=4 > productos.fixtures/productos.json
+
+recuperacion de datos:
+
+python manage.py loaddata productos.json
