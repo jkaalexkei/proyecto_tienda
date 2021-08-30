@@ -55,6 +55,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'proyecto_tienda.urls'
 
+AUTH_USER_MODEL = 'usuarios.User' #con esto le indicamos a django que vamos a dejar de usar el modelo user que viene por defecto y que se usuara el que fue declarado
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

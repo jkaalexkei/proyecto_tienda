@@ -5,7 +5,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from . forms import FormularioRegistro
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
+from usuarios.models import User
 from productos.models import Producto
 
 def index(request):
