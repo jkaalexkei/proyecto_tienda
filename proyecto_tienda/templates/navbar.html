@@ -1,11 +1,13 @@
 {% url 'login' as login %}
 {% url 'registro' as registro %}
 {% url 'carrito:carrito' as carrito %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand " href="{% url 'index' %}">Tienda Online</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+    <div>
+      <a class="navbar-brand " href="{% url 'index' %}">Tienda Online</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    </div>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         
@@ -16,19 +18,11 @@
             
         
         {% else %}
-
+           <a class="nav-item nav-link {% if request.path == carrito %}active{%endif%}" href="{{ carrito }}"> Carrito<i class="fas fa-shopping-cart"></i> </a>
             <a class="nav-item nav-link {% if request.path == login %}active{% endif %}" href="{{login}}"><i class="far fa-user"></i> Login <span class="sr-only">(current)</span></a>
             <a class="nav-item nav-link {% if request.path == registro%}active{%endif%}" href="{{registro}}"><i class="fas fa-user-plus"></i> Registro</a>
             
-            
-
-
         {% endif %}
-            
-
-       
-        
-        
       </div>
     </div>
   </nav>

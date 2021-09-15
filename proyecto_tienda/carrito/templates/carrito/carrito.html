@@ -1,5 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Carrito de compras</h2>
+    
+    {% if carrito.producto.exists %}
+        <div class="col-8">
+            <table class="table">
+
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for producto in carrito.producto  %}
+                        <tr>
+                            <th>{{ forloop.counter }}</th>
+                            <th>
+                                
+                                {% if producto.imagen %}
+                                    <img src="{{ producto.imagen.url }}" width="60" height="70">
+                                {% endif %}
+                                    
+                            </th>
+                            <th>
+                                <a href="{% url 'producto:producto' producto.slug%}">{{ producto.titulo}}</a>
+                            </th>
+                            <th>
+                                
+                            </th>
+                        </tr>
+                    {% endfor %}
+                        
+                </tbody>
+
+            </table>
+        </div>
+        <div class="col">
+
+        </div>
+    {% endif %}
+        
 {% endblock  %}

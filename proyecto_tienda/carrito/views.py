@@ -22,13 +22,13 @@ def carrito(request):
     # valorsesion=request.session['carrito_id'] = None
     # print(valorsesion)
 
-def agregar(request):
-    carrito = get_or_create_carrito(request)
-    prod = Producto.objects.get(pk=request.POST.get('producto_id'))
-    carrito.productos.add(prod)
+def agregar(request):#vista para agregar elementos al carrito
+    carrito = get_or_create_carrito(request)#obtenemos el carrito
+    prod = Producto.objects.get(pk=request.POST.get('producto_id'))#obtenemos el producto
+    carrito.productos.add(prod)#agregamos la relacion
 
     return render(request,'carrito/agregar.html',{
-        'producto' : prod
+        'producto' : prod#enviamos el producto al template
     })
     
    
