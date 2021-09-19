@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load producto_extras %}
 
 {% block content %}
     
-    {% if carrito.producto.exists %}
-        <div class="col-8">
+    {% if cart.productos.exists %}
+        <div class="col-8 bg-white">
             <table class="table">
 
                 <thead>
@@ -16,22 +17,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
-                    {% for producto in carrito.producto  %}
+                    <!-- cart.productos hace referencia a la relacion. Y con el metodo all hace referencia a los productos -->
+                    {% for producto in cart.productos.all  %}
                         <tr>
                             <th>{{ forloop.counter }}</th>
                             <th>
                                 
                                 {% if producto.imagen %}
-                                    <img src="{{ producto.imagen.url }}" width="60" height="70">
+                                    <img src="{{ producto.imagen.url }}" width="60" height="60">
                                 {% endif %}
                                     
                             </th>
                             <th>
-                                <a href="{% url 'producto:producto' producto.slug%}">{{ producto.titulo}}</a>
+                                <a href="{% url 'productos:producto' producto.slug %}">{{ producto.titulo}}</a>
+                                {% include 'carrito/snippets/remove.html' %}
                             </th>
+                            <th>1</th>
                             <th>
-                                
+                                <span class="font-weight-bold text-danger">{{ producto.precio | precio_formato }}</span>
                             </th>
                         </tr>
                     {% endfor %}
@@ -42,6 +45,11 @@
         </div>
         <div class="col">
 
+        </div>
+    {% else %}
+        <div class="col">
+            <p class="h3">Tu carrito de compras esta vacio</p>
+            <a href="{% url 'index' %}">Seguir Comprando</a>
         </div>
     {% endif %}
         

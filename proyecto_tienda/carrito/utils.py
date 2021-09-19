@@ -7,7 +7,7 @@ def get_or_create_carrito(request):
     carrito_id = request.session.get('carrito_id')#le asignamos a la variable la sesion existente
     #el metodo get retorna None en caso que la llave no exista
 
-    carrito = Carrito.objects.filter(cart_id=carrito_id).first()#de esta manera retornamos una lista de objetos que cumplan la cndicion de lo contrario retorna None
+    carrito = Carrito.objects.filter(cart_id=carrito_id).first()#de esta manera retornamos una lista de objetos que cumplan la condicion de lo contrario retorna None
 
     if carrito is None:#validamos si el carrito no existe
 

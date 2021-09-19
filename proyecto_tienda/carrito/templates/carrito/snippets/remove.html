@@ -1,0 +1,7 @@
+<!-- este snippets permite agregar elementos al carrito de compras -->
+
+<form action="{% url 'carrito:remove' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="producto_id" value="{{ producto.id }}">
+    <button class="btn btn-link text-danger" type="submit" style="padding: 0px;">Eliminar</button>
+</form>

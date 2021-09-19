@@ -1,14 +1,17 @@
-from django.shortcuts import render
-from .models import Carrito
+from django.shortcuts import redirect, render
+#from .models import Carrito
+from .models import Producto
 from .utils import get_or_create_carrito
-from productos.models import Producto
+from django.shortcuts import get_object_or_404 #para manejar excepciones en los templates
+
 # Create your views here.
 
 def carrito(request):
-    carrito = get_or_create_carrito(request)
-    
-    return render(request,'carrito/carrito.html',{
 
+    cart = get_or_create_carrito(request)
+    
+    return render(request, 'carrito/carrito.html',{
+        'cart':cart
     })
     #crear sesion
     #la sesion se crea en el objeto request
@@ -30,7 +33,23 @@ def agregar(request):#vista para agregar elementos al carrito
     return render(request,'carrito/agregar.html',{
         'producto' : prod#enviamos el producto al template
     })
-    
+
+def remove(request):
+    carrito = get_or_create_carrito(request)#obtenemos el carrito
+
+    prod = get_object_or_404(Producto,pk=request.POST.get('producto_id'))
+        #sintaxis  get_object_or_404(Modelo a trabajar,condicion a evaluar)
+    #prod = Producto.objects.get(pk=request.POST.get('producto_id'))#obtenemos el producto que queremos eliminar
+
+    """
+    La diferencia entre la excepcion y la pagina 404 es que la excepcion manda un con codigo 500 al cliente indicando que hubo un error interno en el servidor.
+
+    la page not found envia un codigo 404 indicando al cliente que un recurso no pudo ser encontrado
+    """
+
+    carrito.productos.remove(prod)
+
+    return redirect('carrito:carrito')
    
 
 
