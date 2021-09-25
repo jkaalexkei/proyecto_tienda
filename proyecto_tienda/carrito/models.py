@@ -12,7 +12,7 @@ import decimal
 class Carrito(models.Model):
     cart_id = models.CharField(max_length=100,null=False,blank=False,unique=True)
     usuario =  models.ForeignKey(User,null=True,blank=True,on_delete=models.CASCADE)#relacion de uno a muchos con el modelo usuario
-    productos = models.ManyToManyField(Producto)#relacion muchos a muchos con el modelo productos
+    productos = models.ManyToManyField(Producto, through='CartProducts')#relacion muchos a muchos con el modelo productos
     subtotal = models.DecimalField(default=0.0, max_digits=8,decimal_places=2)
     total = models.DecimalField(default=0.0,max_digits=8,decimal_places=2)
     created_ad = models.DateTimeField(auto_now_add=True)
@@ -28,11 +28,23 @@ class Carrito(models.Model):
     
     def update_subtotal(self):
         self.subtotal = sum([ producto.precio for producto in self.productos.all() ])#obtenemos la lista de precios y sumamos los valores
-        self.save()
+        self.save()#guardar cambios
     
     def update_total(self):
         self.total = self.subtotal + (self.subtotal * decimal.Decimal(Carrito.FEE))
         self.save()
+
+class CartProducts(models.Model):
+    #este modelo se encarga de establecer la rrelación entre un carrito y producto
+
+    carrito = models.ForeignKey(Carrito,on_delete=models.CASCADE)
+    Producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
+
+    #cantidad de productos que se pueden agregar al carrito
+    cantidad = models.IntegerField(default=1)
+    created_at= models.DateTimeField(auto_now_add=True)
+
+
 
 
 def set_cart_id(sender,instance,*arg,**kwargs):#creamos un callbacks
@@ -51,11 +63,11 @@ def update_totals(sender,instance,action,*args,**kwargs):
         acciones que se pueden realizar para calcular el subtotal
         post_add --> despues que el objeto se agrega
         post_remove --> despues que un objeto se elimina
-        post_clear --> despues que elimina la relacion
+        post_clear --> despues que limipia la relacion
     """
 
 
     pass
 pre_save.connect(set_cart_id, sender=Carrito)
-m2m_changed.connect(update_totals,sender=Carrito.productos.through)
+m2m_changed.connect(update_totals,sender=Carrito.productos.through)#aca se debe colocar es la relacion entre el carrito y productos
 
