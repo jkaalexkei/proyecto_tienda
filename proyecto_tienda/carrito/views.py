@@ -28,7 +28,14 @@ def carrito(request):
 def agregar(request):#vista para agregar elementos al carrito
     carrito = get_or_create_carrito(request)#obtenemos el carrito
     prod = Producto.objects.get(pk=request.POST.get('producto_id'))#obtenemos el producto
-    carrito.productos.add(prod)#agregamos la relacion
+    cantidad = request.POST.get('cantidad',1)#aca capturamos el valor del formulario para la cantidad, que caso que no se suministre ningun valor toma el valor por defecto 1
+
+
+    carrito.productos.add(prod, through_defaults={
+        'cantidad':cantidad
+
+    })#agregamos la relacion
+    #el parametro through_default es un diccionario y se utiliza para establecer valores a los atributos de la vista
 
     return render(request,'carrito/agregar.html',{
         'producto' : prod#enviamos el producto al template

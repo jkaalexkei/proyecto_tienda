@@ -32,7 +32,7 @@
                                 <a href="{% url 'productos:producto' producto.slug %}">{{ producto.titulo}}</a>
                                 {% include 'carrito/snippets/remove.html' %}
                             </th>
-                            <th>1</th>
+                            <th>{{ producto.cantidad }}</th>
                             <th>
                                 <span class="font-weight-bold text-danger">{{ producto.precio | precio_formato }}</span>
                             </th>
