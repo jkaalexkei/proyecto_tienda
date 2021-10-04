@@ -18,25 +18,30 @@
                 </thead>
                 <tbody>
                     <!-- cart.productos hace referencia a la relacion. Y con el metodo all hace referencia a los productos -->
-                    {% for producto in cart.productos.all  %}
-                        <tr>
-                            <th>{{ forloop.counter }}</th>
-                            <th>
-                                
-                                {% if producto.imagen %}
-                                    <img src="{{ producto.imagen.url }}" width="60" height="60">
-                                {% endif %}
+                    <!-- para poder acceder la relacion uno a muchos se debe hacer por medio de la utilizacion del nombre de la clase en minusculas que contiene la relacion ( cartproducts_set.all )-->
+                    <!-- de esta manera se resuelve el problema n + 1 query o mas de una consulta -->
+                    {% for cp in cart.productos_related  %}
+                 <!-- en cada iteracion generamos una nueva variable -->
+                        {% with producto=cp.producto %}
+                            <tr>
+                                <th>{{ forloop.counter }}</th>
+                                <th>
                                     
-                            </th>
-                            <th>
-                                <a href="{% url 'productos:producto' producto.slug %}">{{ producto.titulo}}</a>
-                                {% include 'carrito/snippets/remove.html' %}
-                            </th>
-                            <th>{{ producto.cantidad }}</th>
-                            <th>
-                                <span class="font-weight-bold text-danger">{{ producto.precio | precio_formato }}</span>
-                            </th>
-                        </tr>
+                                    {% if producto.imagen %}
+                                        <img src="{{ producto.imagen.url }}" width="60" height="60">
+                                    {% endif %}
+                                        
+                                </th>
+                                <th>
+                                    <a href="{% url 'productos:producto' producto.slug %}">{{ producto.titulo}}</a>
+                                    {% include 'carrito/snippets/remove.html' %}
+                                </th>
+                                <th>{{ cp.cantidad }}</th>
+                                <th>
+                                    <span class="font-weight-bold text-danger">{{ producto.precio | precio_formato }}</span>
+                                </th>
+                            </tr>
+                        {% endwith %}
                     {% endfor %}
                         
                 </tbody>

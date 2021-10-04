@@ -34,18 +34,19 @@ class Carrito(models.Model):
         self.total = self.subtotal + (self.subtotal * decimal.Decimal(Carrito.FEE))
         self.save()
 
+    def productos_related(self):
+        return self.cartproducts_set.select_related('producto')#con esta linea estaremos obteniendo la relacion de todos los elementos cartproducts y productos mediante el uso del metodo select_related el cual hace las veces de un join en sql
+
+
 class CartProducts(models.Model):
     #este modelo se encarga de establecer la rrelación entre un carrito y producto
 
     carrito = models.ForeignKey(Carrito,on_delete=models.CASCADE)
-    Producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto,on_delete=models.CASCADE)
 
     #cantidad de productos que se pueden agregar al carrito
     cantidad = models.IntegerField(default=1)
     created_at= models.DateTimeField(auto_now_add=True)
-
-
-
 
 def set_cart_id(sender,instance,*arg,**kwargs):#creamos un callbacks
     
