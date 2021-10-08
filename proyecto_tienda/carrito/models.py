@@ -35,8 +35,20 @@ class Carrito(models.Model):
         self.save()
 
     def productos_related(self):
-        return self.cartproducts_set.select_related('producto')#con esta linea estaremos obteniendo la relacion de todos los elementos cartproducts y productos mediante el uso del metodo select_related el cual hace las veces de un join en sql
+        #esta linea permite solventar el problema n + 1 query
+        return self.cartproducts_set.select_related('producto')#con esta linea estaremos obteniendo la relacion de todos los elementos cartproducts y productos mediante el uso del metodo select_related el cual hace las veces de un join en sql . Permite obtener la mayor cantidad de información posible
 
+class CartProductsManager(models.Manager): #clase para extender funciones del objeto objects
+
+    def crear_o_actualizar_cantidad(self,carrito,producto,cantidad=1):
+            objeto , created = self.get_or_create(carrito=carrito,producto=producto) #get_or_create permite obtener un objeto a partir de condiciones retorna dos parametros. el objeto si ya existe,el objeto en que caso que se haya creado, el segundo parametro es booleano
+            if not created:#siempre que el objeto se cree o actualize se actualiza la cantidad
+                cantidad = objeto.cantidad + cantidad
+
+            objeto.update_cantidad(cantidad)
+                
+
+            return objeto
 
 class CartProducts(models.Model):
     #este modelo se encarga de establecer la rrelación entre un carrito y producto
@@ -47,6 +59,12 @@ class CartProducts(models.Model):
     #cantidad de productos que se pueden agregar al carrito
     cantidad = models.IntegerField(default=1)
     created_at= models.DateTimeField(auto_now_add=True)
+
+    objects = CartProductsManager()
+
+    def update_cantidad(self,cantidad=1):
+        self.cantidad = cantidad
+        self.save()
 
 def set_cart_id(sender,instance,*arg,**kwargs):#creamos un callbacks
     

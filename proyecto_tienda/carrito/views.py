@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from .models import Producto
 from .utils import get_or_create_carrito
 from django.shortcuts import get_object_or_404 #para manejar excepciones en los templates
+from .models import CartProducts
 
 # Create your views here.
 
@@ -28,13 +29,18 @@ def carrito(request):
 def agregar(request):#vista para agregar elementos al carrito
     carrito = get_or_create_carrito(request)#obtenemos el carrito
     prod = Producto.objects.get(pk=request.POST.get('producto_id'))#obtenemos el producto
-    cantidad = request.POST.get('cantidad',1)#aca capturamos el valor del formulario para la cantidad, que caso que no se suministre ningun valor toma el valor por defecto 1
+    cantidad = int(request.POST.get('cantidad',1)) #aca capturamos el valor del formulario para la cantidad, que caso que no se suministre ningun valor toma el valor por defecto 1
+
+    #otra manera para agregar elementos al carrito y crear la relacion con el modelo producto es siguiente
+    
+    # cart_producto=CartProducts.objects.created_or_update_cantidad(carrito=carrito,producto=prod,cantidad=cantidad)
+    cart_producto=CartProducts.objects.crear_o_actualizar_cantidad(carrito=carrito,producto=prod,cantidad=cantidad)
 
 
-    carrito.productos.add(prod, through_defaults={
-        'cantidad':cantidad
+    # carrito.productos.add(prod, through_defaults={
+    #     'cantidad':cantidad
 
-    })#agregamos la relacion
+    # })#agregamos la relacion
     #el parametro through_default es un diccionario y se utiliza para establecer valores a los atributos de la vista
 
     return render(request,'carrito/agregar.html',{
