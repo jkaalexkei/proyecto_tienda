@@ -44,7 +44,10 @@ def agregar(request):#vista para agregar elementos al carrito
     #el parametro through_default es un diccionario y se utiliza para establecer valores a los atributos de la vista
 
     return render(request,'carrito/agregar.html',{
+        'cantidad':cantidad,
+        'cart_product': cart_producto,
         'producto' : prod#enviamos el producto al template
+
     })
 
 def remove(request):

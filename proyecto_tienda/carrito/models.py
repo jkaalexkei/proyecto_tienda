@@ -3,7 +3,7 @@ from django.db import models
 
 from usuarios.models import User
 from productos.models import Producto
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save,post_save
 from django.db.models.signals import m2m_changed #signals para calcular subtotal y total del carrito de compras
 import decimal
 
@@ -27,7 +27,12 @@ class Carrito(models.Model):
         self.update_total()
     
     def update_subtotal(self):
-        self.subtotal = sum([ producto.precio for producto in self.productos.all() ])#obtenemos la lista de precios y sumamos los valores
+        self.subtotal = sum([
+
+            cp.cantidad * cp.producto.precio for cp in self.productos_related()
+        ])
+
+        #self.subtotal = sum([ producto.precio for producto in self.productos.all() ])#obtenemos la lista de precios y sumamos los valores
         self.save()#guardar cambios
     
     def update_total(self):
@@ -86,7 +91,10 @@ def update_totals(sender,instance,action,*args,**kwargs):
     """
 
 
-    pass
+def post_save_update_totals(sender,instance,*args,**kwargs):
+    instance.carrito.update_totals()
+
 pre_save.connect(set_cart_id, sender=Carrito)
+post_save.connect(post_save_update_totals,sender=CartProducts)
 m2m_changed.connect(update_totals,sender=Carrito.productos.through)#aca se debe colocar es la relacion entre el carrito y productos
 
