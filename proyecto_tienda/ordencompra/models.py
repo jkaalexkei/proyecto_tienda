@@ -17,12 +17,12 @@ class OrderStatus(Enum):
 opciones = [( tag, tag.value) for tag in OrderStatus ]
 
 
-class Ordencompra(models.Model):
+class Ordencompra(models.Model):#crea la tabla orden de compra
     usuario = models.ForeignKey(User,on_delete=models.CASCADE)
 
     cart = models.ForeignKey(Carrito,on_delete=models.CASCADE)
 
-    status = models.CharField(max_length=50,choices=opciones,default=OrderStatus.CREADO)#enum
+    status = models.CharField(max_length=50,choices=opciones,default=OrderStatus.CREADO)#enum para limitar los valores que almacene
 
     total_envio =  models.DecimalField(default=5,max_digits=8,decimal_places=2)
 

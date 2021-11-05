@@ -55,7 +55,7 @@
                         sutotal:({{ cart.productos.count }}) <span class="text-danger">{{ cart.subtotal | precio_formato }}</span>
                     </div>
                     <div class="mt-2">
-                        <a href="" class="btn btn-warning">Proceder al pago</a>
+                        <a href="{% url 'orden:ordenes' %}" class="btn btn-warning">Proceder al pago</a>
                     </div>
                 </div>
 
